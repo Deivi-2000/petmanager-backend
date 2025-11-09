@@ -42,6 +42,7 @@ public class PaymentService {
     private final PaymentConditionRepository paymentConditionRepository;
     private final PaymentMapper paymentMapper;
     private final ProductMapper productMapper;
+    private final PaymentDTOBuilder paymentDTOBuilder;
 
     @Transactional
     public PaymentResponseDTO createPayment(PaymentRequestDTO paymentRequestDTO) {
@@ -148,8 +149,8 @@ public class PaymentService {
                 .findTopBySupplierAndPaymentDateAfterOrderByPaymentDateAsc(supplier, today)
                 .orElse(null);
 
-        PaymentResponseDTO lastPaymentDTO = lastPayment != null ? buildPaymentResponseDTO(lastPayment) : null;
-        PaymentResponseDTO nextPaymentDTO = nextPayment != null ? buildPaymentResponseDTO(nextPayment) : null;
+        PaymentResponseDTO lastPaymentDTO = lastPayment != null ? paymentDTOBuilder.buildPaymentResponseDTO(lastPayment) : null;
+        PaymentResponseDTO nextPaymentDTO = nextPayment != null ? paymentDTOBuilder.buildPaymentResponseDTO(nextPayment) : null;
 
         SupplierLastNextPaymentsResponseDTO response = new SupplierLastNextPaymentsResponseDTO();
         response.setSupplierId(supplierId);
