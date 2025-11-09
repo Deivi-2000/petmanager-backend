@@ -33,6 +33,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PaymentService {
 
+    private static final String SUPPLIER_NOT_FOUND_MESSAGE = "No existe un proveedor con id: ";
+
     private final PaymentRepository paymentRepository;
     private final SupplierRepository supplierRepository;
     private final ProductRepository productRepository;
@@ -44,7 +46,7 @@ public class PaymentService {
     @Transactional
     public PaymentResponseDTO createPayment(PaymentRequestDTO paymentRequestDTO) {
         Supplier supplier = supplierRepository.findById(paymentRequestDTO.getSupplierId())
-                        .orElseThrow(() -> new IllegalArgumentException("No existe un proveedor con id: " + paymentRequestDTO.getSupplierId()));
+                        .orElseThrow(() -> new IllegalArgumentException(SUPPLIER_NOT_FOUND_MESSAGE + paymentRequestDTO.getSupplierId()));
 
         Payment payment = new Payment();
         payment.setSupplier(supplier);
@@ -96,7 +98,7 @@ public class PaymentService {
     @Transactional(readOnly = true)
     public SupplierPaymentsResponseDTO getAllPaymentsBySupplierId(int supplierId) {
         Supplier supplier = supplierRepository.findById(supplierId)
-                        .orElseThrow(() -> new IllegalArgumentException("No existe un proveedor con id: " + supplierId));
+                        .orElseThrow(() -> new IllegalArgumentException(SUPPLIER_NOT_FOUND_MESSAGE + supplierId));
         
         List<Payment> supplierPayments = paymentRepository.findBySupplier(supplier);
 
@@ -134,7 +136,7 @@ public class PaymentService {
     @Transactional(readOnly = true)
     public SupplierLastNextPaymentsResponseDTO getLastAndNextPaymentsBySupplierId(int supplierId) {
         Supplier supplier = supplierRepository.findById(supplierId)
-                .orElseThrow(() -> new IllegalArgumentException("No existe un proveedor con id: " + supplierId));
+                .orElseThrow(() -> new IllegalArgumentException(SUPPLIER_NOT_FOUND_MESSAGE + supplierId));
 
         LocalDate today = LocalDate.now();
 
