@@ -25,7 +25,7 @@ public class PaymentRequestDTO {
 
     @NotEmpty(message = "La lista de productos no puede estar vacía")
     @Valid
-    private List<PaymentsProductsDTO> products;
+    private List<ProductRequestDTO> products;
 
     private String notes;
 }

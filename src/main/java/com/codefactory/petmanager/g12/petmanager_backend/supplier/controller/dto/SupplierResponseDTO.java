@@ -17,7 +17,7 @@ public class SupplierResponseDTO {
   private String phoneNumber;
   private String address;
   private String email;
-  private PaymentCondition paymentCondition;
+  private Integer paymentConditionId;
   private String paymentNotes;
   
 }
